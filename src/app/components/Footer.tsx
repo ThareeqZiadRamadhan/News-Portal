@@ -10,7 +10,10 @@ const footerLinks = {
 };
 
 function useMediaQuery(query: string) {
-  const [matches, setMatches] = useState(false);
+  const [matches, setMatches] = useState(() => {
+    if (typeof window !== "undefined") return window.matchMedia(query).matches;
+    return false;
+  });
   useEffect(() => {
     const mql = window.matchMedia(query);
     setMatches(mql.matches);

@@ -2,9 +2,22 @@ import { useState, useEffect } from "react";
 import { X, Copy, Check, Twitter, Linkedin, Facebook, Mail, Link } from "lucide-react";
 import { useApp } from "../context/AppContext";
 
+function useMediaQuery(query: string) {
+  const [matches, setMatches] = useState(false);
+  useEffect(() => {
+    const mql = window.matchMedia(query);
+    setMatches(mql.matches);
+    const handler = (e: MediaQueryListEvent) => setMatches(e.matches);
+    mql.addEventListener("change", handler);
+    return () => mql.removeEventListener("change", handler);
+  }, [query]);
+  return matches;
+}
+
 export function ShareMenu() {
   const { shareArticle, closeShare, copyShareLink } = useApp();
   const [copied, setCopied] = useState(false);
+  const isMobile = useMediaQuery("(max-width: 768px)");
 
   useEffect(() => {
     if (!shareArticle) setCopied(false);
@@ -66,14 +79,21 @@ export function ShareMenu() {
       style={{
         position: "fixed", inset: 0, zIndex: 1200,
         background: "rgba(0,0,0,0.55)", backdropFilter: "blur(4px)",
-        display: "flex", alignItems: "center", justifyContent: "center", padding: "20px",
+        display: "flex",
+        alignItems: isMobile ? "flex-end" : "center",
+        justifyContent: "center",
+        padding: isMobile ? "0" : "20px",
       }}
       onClick={(e) => { if (e.target === e.currentTarget) closeShare(); }}
     >
       <div
         style={{
-          background: "#fff", borderRadius: "6px", width: "100%", maxWidth: "400px",
-          overflow: "hidden", boxShadow: "0 20px 60px rgba(0,0,0,0.2)",
+          background: "#fff",
+          borderRadius: isMobile ? "12px 12px 0 0" : "6px",
+          width: "100%",
+          maxWidth: isMobile ? "100%" : "400px",
+          overflow: "hidden",
+          boxShadow: "0 20px 60px rgba(0,0,0,0.2)",
         }}
         onClick={(e) => e.stopPropagation()}
       >
