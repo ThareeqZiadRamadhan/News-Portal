@@ -2,6 +2,18 @@ import { useState, useEffect } from "react";
 import { X, Eye, EyeOff, CheckCircle } from "lucide-react";
 import { useApp } from "../context/AppContext";
 
+function useMediaQuery(query: string) {
+  const [matches, setMatches] = useState(false);
+  useEffect(() => {
+    const mql = window.matchMedia(query);
+    setMatches(mql.matches);
+    const handler = (e: MediaQueryListEvent) => setMatches(e.matches);
+    mql.addEventListener("change", handler);
+    return () => mql.removeEventListener("change", handler);
+  }, [query]);
+  return matches;
+}
+
 export function AuthModal() {
   const { authModal, closeAuth, handleAuthSubmit, authSuccess } = useApp();
   const [email, setEmail] = useState("");
@@ -9,6 +21,7 @@ export function AuthModal() {
   const [showPw, setShowPw] = useState(false);
   const [errors, setErrors] = useState<{ email?: string; password?: string }>({});
   const [loading, setLoading] = useState(false);
+  const isMobile = useMediaQuery("(max-width: 768px)");
 
   useEffect(() => {
     if (!authModal) { setEmail(""); setPassword(""); setErrors({}); setLoading(false); }
@@ -48,19 +61,25 @@ export function AuthModal() {
         position: "fixed", inset: 0, zIndex: 1100,
         background: "rgba(0,0,0,0.65)", backdropFilter: "blur(4px)",
         display: "flex", alignItems: "center", justifyContent: "center",
-        padding: "20px",
+        padding: isMobile ? "0" : "20px",
+        overflowY: "auto",
       }}
       onClick={(e) => { if (e.target === e.currentTarget) closeAuth(); }}
     >
       <div
         style={{
-          background: "#fff", borderRadius: "4px", width: "100%", maxWidth: "440px",
-          overflow: "hidden", boxShadow: "0 24px 64px rgba(0,0,0,0.2)",
+          background: "#fff",
+          borderRadius: isMobile ? 0 : "4px",
+          width: "100%",
+          maxWidth: isMobile ? "100%" : "440px",
+          minHeight: isMobile ? "100vh" : undefined,
+          overflow: "hidden",
+          boxShadow: isMobile ? "none" : "0 24px 64px rgba(0,0,0,0.2)",
         }}
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
-        <div style={{ padding: "28px 32px 0", display: "flex", alignItems: "flex-start", justifyContent: "space-between" }}>
+        <div style={{ padding: isMobile ? "20px 16px 0" : "28px 32px 0", display: "flex", alignItems: "flex-start", justifyContent: "space-between" }}>
           <div>
             <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "8px" }}>
               <div style={{ width: "3px", height: "20px", background: "#1a56db", borderRadius: "2px" }} />
@@ -88,7 +107,7 @@ export function AuthModal() {
           </button>
         </div>
 
-        <div style={{ padding: "24px 32px 32px" }}>
+        <div style={{ padding: isMobile ? "20px 16px 24px" : "24px 32px 32px" }}>
           {authSuccess ? (
             <div style={{ textAlign: "center", padding: "20px 0" }}>
               <div style={{

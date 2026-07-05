@@ -6,7 +6,12 @@ import { Article } from "../data/articles";
 const CATEGORIES = ["All", "World", "Politics", "Business", "Technology", "Science", "Environment", "Culture"];
 
 function useMediaQuery(query: string) {
-  const [matches, setMatches] = useState(false);
+  const [matches, setMatches] = useState(() => {
+    if (typeof window !== "undefined") {
+      return window.matchMedia(query).matches;
+    }
+    return false;
+  });
   useEffect(() => {
     const mql = window.matchMedia(query);
     setMatches(mql.matches);
@@ -30,6 +35,8 @@ function ArticleCard({ article, isMobile }: { article: Article; isMobile: boolea
         display: "flex",
         flexDirection: isMobile ? "row" : "column",
         transition: "box-shadow 0.2s, transform 0.2s",
+        width: "100%",
+        maxWidth: "100%",
       }}
       className="group hover:shadow-[0_8px_32px_rgba(0,0,0,0.12)] hover:-translate-y-0.5"
     >
@@ -104,11 +111,12 @@ function ArticleCard({ article, isMobile }: { article: Article; isMobile: boolea
       <div
         onClick={() => openArticle(article)}
         style={{
-          padding: isMobile ? "14px" : "20px",
+          padding: isMobile ? "12px" : "20px",
           flex: 1,
           display: "flex",
           flexDirection: "column",
           minWidth: 0,
+          overflow: "hidden",
         }}
       >
         {/* Mobile category pill inline */}
@@ -124,9 +132,10 @@ function ArticleCard({ article, isMobile }: { article: Article; isMobile: boolea
         <h3
           style={{
             fontFamily: "'Georgia', 'Times New Roman', serif",
-            fontSize: isMobile ? "14px" : "16px", fontWeight: 700, lineHeight: 1.4,
+            fontSize: isMobile ? "13px" : "16px", fontWeight: 700, lineHeight: 1.4,
             color: "#0a0a0a", marginBottom: isMobile ? "6px" : "10px",
             display: "-webkit-box", WebkitLineClamp: isMobile ? 2 : 3, WebkitBoxOrient: "vertical" as const, overflow: "hidden",
+            wordBreak: "break-word" as const, overflowWrap: "break-word" as const,
           }}
           className="group-hover:text-[#1a56db] transition-colors"
         >
@@ -190,11 +199,11 @@ export function ArticleGrid() {
   const visible = allFiltered.slice(0, displayedCount);
   const hasMore = allFiltered.length > displayedCount;
 
-  const isMobile = useMediaQuery("(max-width: 640px)");
+  const isMobile = useMediaQuery("(max-width: 768px)");
   const isTablet = useMediaQuery("(max-width: 1024px)");
 
   return (
-    <div>
+    <div style={{ overflow: "hidden", width: "100%", minWidth: 0 }}>
       {/* Section header */}
       <div style={{ display: "flex", alignItems: "center", gap: "12px", marginBottom: isMobile ? "16px" : "24px" }}>
         <div style={{ width: "3px", height: "18px", background: "#0a0a0a", borderRadius: "2px" }} />
@@ -252,6 +261,8 @@ export function ArticleGrid() {
           flexDirection: isMobile ? "column" : undefined,
           gridTemplateColumns: isMobile ? undefined : isTablet ? "repeat(2, 1fr)" : "repeat(3, 1fr)",
           gap: isMobile ? "12px" : "20px",
+          width: "100%",
+          overflow: "hidden",
         }}>
           {visible.map((article) => (
             <ArticleCard key={article.id} article={article} isMobile={isMobile} />

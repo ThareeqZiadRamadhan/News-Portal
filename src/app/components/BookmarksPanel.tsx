@@ -3,7 +3,10 @@ import { X, Bookmark, Trash2 } from "lucide-react";
 import { useApp } from "../context/AppContext";
 
 function useMediaQuery(query: string) {
-  const [matches, setMatches] = useState(false);
+  const [matches, setMatches] = useState(() => {
+    if (typeof window !== "undefined") return window.matchMedia(query).matches;
+    return false;
+  });
   useEffect(() => {
     const mql = window.matchMedia(query);
     setMatches(mql.matches);
