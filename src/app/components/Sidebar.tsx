@@ -1,3 +1,5 @@
+"use client";
+
 import { useState, useEffect } from "react";
 import { TrendingUp, ChevronRight, BarChart2, Mail, ArrowUpRight, Flame } from "lucide-react";
 import { useApp } from "../context/AppContext";

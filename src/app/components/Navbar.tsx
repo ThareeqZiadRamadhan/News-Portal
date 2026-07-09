@@ -1,3 +1,5 @@
+"use client";
+
 import { useState, useEffect } from "react";
 import { Search, Menu, X, Bell, Bookmark, ChevronDown } from "lucide-react";
 import { useApp } from "../context/AppContext";
@@ -39,7 +41,7 @@ export function Navbar() {
   const moreSections = sections.slice(6);
 
   return (
-    <header className="w-full bg-white border-b border-gray-100 sticky top-0 z-50">
+    <header style={{ width: "100%", maxWidth: "100vw", overflow: "hidden", background: "#fff", borderBottom: "1px solid #f0f0f0", position: "sticky", top: 0, zIndex: 50 }}>
       {/* Top bar — hidden on mobile */}
       {!isMobile && (
         <div className="border-b border-gray-100">
@@ -175,26 +177,41 @@ export function Navbar() {
 
       {/* Search bar */}
       {searchOpen && (
-        <div className="border-t border-gray-100 bg-white">
+        <div style={{ borderTop: "1px solid #f0f0f0", background: "#fff" }}>
           <div style={{
             maxWidth: "1440px", margin: "0 auto",
             padding: isMobile ? "12px 16px" : "12px 32px",
           }}>
-            <div className="relative max-w-2xl mx-auto">
-              <Search size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
+            <div style={{ position: "relative", maxWidth: "640px", margin: "0 auto", width: "100%" }}>
+              <Search size={16} style={{ position: "absolute", left: "14px", top: "50%", transform: "translateY(-50%)", color: "#aaa" }} />
               <input
                 autoFocus
                 type="text"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="Search articles, topics, authors..."
-                className="w-full pl-10 pr-10 py-3 border border-gray-200 rounded-sm outline-none focus:border-[#1a56db] transition-colors"
-                style={{ fontSize: "14px", background: "#fafafa" }}
+                style={{
+                  width: "100%",
+                  maxWidth: "100%",
+                  boxSizing: "border-box",
+                  paddingLeft: "40px",
+                  paddingRight: "40px",
+                  paddingTop: "12px",
+                  paddingBottom: "12px",
+                  border: "1px solid #e0e0e0",
+                  borderRadius: "3px",
+                  outline: "none",
+                  fontSize: "14px",
+                  background: "#fafafa",
+                }}
               />
               {searchQuery && (
                 <button
                   onClick={() => setSearchQuery("")}
-                  className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-700"
+                  style={{
+                    position: "absolute", right: "14px", top: "50%", transform: "translateY(-50%)",
+                    background: "none", border: "none", cursor: "pointer", color: "#aaa", padding: "4px",
+                  }}
                 >
                   <X size={14} />
                 </button>

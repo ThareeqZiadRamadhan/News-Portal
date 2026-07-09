@@ -1,3 +1,5 @@
+"use client";
+
 import { useEffect, useRef, useState } from "react";
 import { X, Bell, Check } from "lucide-react";
 import { useApp } from "../context/AppContext";
