@@ -1,3 +1,5 @@
+"use client";
+
 import { useState, useEffect } from "react";
 import { Twitter, Linkedin, Youtube, Instagram, Rss } from "lucide-react";
 import { useApp } from "../context/AppContext";

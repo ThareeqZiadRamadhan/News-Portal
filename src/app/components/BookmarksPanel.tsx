@@ -1,3 +1,5 @@
+"use client";
+
 import { useEffect, useRef, useState } from "react";
 import { X, Bookmark, Trash2 } from "lucide-react";
 import { useApp } from "../context/AppContext";

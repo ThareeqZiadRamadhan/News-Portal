@@ -1,3 +1,5 @@
+"use client";
+
 import { createContext, useContext, useState, useEffect, useCallback, ReactNode } from "react";
 import { Article, ALL_ARTICLES, OPINION_PIECES } from "../data/articles";
 

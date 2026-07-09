@@ -1,4 +1,6 @@
-import { AppProvider, useApp } from "./context/AppContext";
+"use client";
+
+import { useApp } from "./context/AppContext";
 import { Navbar } from "./components/Navbar";
 import { TickerBanner } from "./components/TickerBanner";
 import { HeroSection } from "./components/HeroSection";
@@ -30,7 +32,7 @@ function useMediaQuery(query: string) {
   return matches;
 }
 
-function NewsPortal() {
+export function NewsPortal() {
   const { openArticle, toggleBookmark, bookmarkedIds, openShare, togglePodcast } = useApp();
   const isMobile = useMediaQuery("(max-width: 768px)");
   const isTablet = useMediaQuery("(max-width: 1024px)");
@@ -251,10 +253,3 @@ function NewsPortal() {
   );
 }
 
-export default function App() {
-  return (
-    <AppProvider>
-      <NewsPortal />
-    </AppProvider>
-  );
-}

@@ -1,3 +1,5 @@
+"use client";
+
 import { useEffect, useRef } from "react";
 
 const tickers = [
@@ -33,7 +35,6 @@ export function TickerBanner() {
           display: "flex",
           alignItems: "center",
           padding: "0 16px",
-          shrink: 0,
           whiteSpace: "nowrap",
           zIndex: 1,
           flexShrink: 0,

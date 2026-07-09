@@ -1,3 +1,5 @@
+"use client";
+
 import { useState, useEffect } from "react";
 import { Clock, ArrowRight, Eye, Bookmark } from "lucide-react";
 import { useApp } from "../context/AppContext";

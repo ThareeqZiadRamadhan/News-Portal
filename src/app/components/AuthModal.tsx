@@ -1,3 +1,5 @@
+"use client";
+
 import { useState, useEffect } from "react";
 import { X, Eye, EyeOff, CheckCircle } from "lucide-react";
 import { useApp } from "../context/AppContext";
